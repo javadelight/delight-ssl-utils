@@ -1,5 +1,5 @@
 package mx.sslutils;
 
-public class NxSslUtils {
+public class MxSslUtils {
 
 }
