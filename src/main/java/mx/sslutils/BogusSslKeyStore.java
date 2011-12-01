@@ -35,7 +35,7 @@ import java.io.InputStream;
  *
  * @version $Rev: 2080 $, $Date: 2010-01-26 18:04:19 +0900 (Tue, 26 Jan 2010) $
  */
-public class BogusSslKeyStore {
+public class BogusSslKeyStore implements SslKeyStoreData {
     private static final short[] DATA = new short[] {
         0xfe, 0xed, 0xfe, 0xed, 0x00, 0x00, 0x00, 0x02,
         0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x01,
@@ -296,19 +296,22 @@ public class BogusSslKeyStore {
         0xe6, 0x9d, 0xd9, 0x1a, 0x62, 0x1b, 0xb8, 0xd3,
         0xd6, 0x9a, 0x6d, 0xb9, 0x8e, 0x15, 0x51 };
 
-    public static InputStream asInputStream() {
-        byte[] data = new byte[DATA.length];
+    @Override
+	public  InputStream asInputStream() {
+        final byte[] data = new byte[DATA.length];
         for (int i = 0; i < data.length; i ++) {
             data[i] = (byte) DATA[i];
         }
         return new ByteArrayInputStream(data);
     }
 
-    public static char[] getCertificatePassword() {
+    @Override
+	public  char[] getCertificatePassword() {
         return "secret".toCharArray();
     }
 
-    public static char[] getKeyStorePassword() {
+    @Override
+	public  char[] getKeyStorePassword() {
         return "secret".toCharArray();
     }
 

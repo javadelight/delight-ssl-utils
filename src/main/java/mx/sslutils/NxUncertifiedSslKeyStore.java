@@ -9,7 +9,7 @@ import java.io.InputStream;
  * @author mroh004
  *
  */
-public class NxUncertifiedSslKeyStore {
+public class NxUncertifiedSslKeyStore  implements SslKeyStoreData {
 	public static final byte[] DATA = new byte[] { -2, -19, -2, -19, 0, 0, 0,
 			2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 110, 120, 110, 111, 100, 101, 0,
 			0, 1, 51, -9, 5, 65, 11, 0, 0, 5, 2, 48, -126, 4, -2, 48, 14, 6,
@@ -153,15 +153,18 @@ public class NxUncertifiedSslKeyStore {
 			3, -94, -76, 18, 15, 60, -34, 95, -119, -90, -123, -72, 88, -32,
 			-87, 34 };
 
-	public static InputStream asInputStream() {
+	@Override
+	public  InputStream asInputStream() {
 		return new ByteArrayInputStream(DATA);
 	}
 
-	public static char[] getCertificatePassword() {
+	@Override
+	public  char[] getCertificatePassword() {
 		return "stay4awhile".toCharArray();
 	}
 
-	public static char[] getKeyStorePassword() {
+	@Override
+	public  char[] getKeyStorePassword() {
 		return "store4awhile".toCharArray();
 	}
 
