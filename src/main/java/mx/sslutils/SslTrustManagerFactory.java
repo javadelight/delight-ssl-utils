@@ -38,12 +38,14 @@ import javax.net.ssl.X509TrustManager;
 public class SslTrustManagerFactory extends TrustManagerFactorySpi {
 
     private static final TrustManager DUMMY_TRUST_MANAGER = new X509TrustManager() {
-        public X509Certificate[] getAcceptedIssuers() {
+        @Override
+		public X509Certificate[] getAcceptedIssuers() {
             return new X509Certificate[0];
         }
 
-        public void checkClientTrusted(
-                X509Certificate[] chain, String authType) throws CertificateException {
+        @Override
+		public void checkClientTrusted(
+                final X509Certificate[] chain, final String authType) throws CertificateException {
             // Always trust - it is an example.
             // You should do something in the real world.
             // You will reach here only if you enabled client certificate auth,
@@ -52,8 +54,9 @@ public class SslTrustManagerFactory extends TrustManagerFactorySpi {
                     "UNKNOWN CLIENT CERTIFICATE: " + chain[0].getSubjectDN());
         }
 
-        public void checkServerTrusted(
-                X509Certificate[] chain, String authType) throws CertificateException {
+        @Override
+		public void checkServerTrusted(
+                final X509Certificate[] chain, final String authType) throws CertificateException {
             // Always trust - it is an example.
             // You should do something in the real world.
             System.err.println(
@@ -71,12 +74,12 @@ public class SslTrustManagerFactory extends TrustManagerFactorySpi {
     }
 
     @Override
-    protected void engineInit(KeyStore keystore) throws KeyStoreException {
+    protected void engineInit(final KeyStore keystore) throws KeyStoreException {
         // Unused
     }
 
     @Override
-    protected void engineInit(ManagerFactoryParameters managerFactoryParameters)
+    protected void engineInit(final ManagerFactoryParameters managerFactoryParameters)
             throws InvalidAlgorithmParameterException {
         // Unused
     }
