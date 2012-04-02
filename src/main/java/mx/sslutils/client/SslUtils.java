@@ -16,11 +16,12 @@ import javax.net.ssl.TrustManager;
 
 public class SslUtils {
 
+	private static SSLContext sslContext = null;
 	private static SSLSocketFactory sslSocketFactory = null;
 	private static HostnameVerifier hostnameVerifier = new DefaultHostNameVerifier();
-	
-	public static SSLSocketFactory getSSLSocketFactory() {
-		if (sslSocketFactory == null) {
+
+	public static SSLContext getSslContext() {
+		if (sslContext == null) {
 			final TrustManager[] trustNxCerts = new TrustManager[] { new DefaultX509TrustManager() };
 
 			try {
@@ -28,12 +29,20 @@ public class SslUtils {
 
 				sc.init(null, trustNxCerts, new java.security.SecureRandom());
 
-				sslSocketFactory = sc.getSocketFactory();
+				sslContext = sc;
+
 			} catch (final KeyManagementException e) {
 				throw new RuntimeException(e);
 			} catch (final NoSuchAlgorithmException e) {
 				throw new RuntimeException(e);
 			}
+		}
+		return sslContext;
+	}
+
+	public static SSLSocketFactory getSSLSocketFactory() {
+		if (sslSocketFactory == null) {
+			sslSocketFactory = getSslContext().getSocketFactory();
 		}
 
 		return sslSocketFactory;
