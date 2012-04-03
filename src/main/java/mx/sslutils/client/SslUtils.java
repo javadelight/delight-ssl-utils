@@ -22,7 +22,9 @@ public class SslUtils {
 
 	public static SSLContext getSslContext() {
 		if (sslContext == null) {
-			final TrustManager[] trustNxCerts = new TrustManager[] { new DefaultX509TrustManager() };
+			final TrustManager[] trustNxCerts = new TrustManager[] {
+					new AcceptAllX509TrustManager(),
+					new DefaultX509TrustManager() };
 
 			try {
 				final SSLContext sc = SSLContext.getInstance("TLS");
