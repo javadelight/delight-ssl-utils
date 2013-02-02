@@ -15,47 +15,78 @@
  */
 package mx.sslutils.internal;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Security;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 
+import mx.gwtutils.Base64Coder;
 import mx.sslutils.SslKeyStoreData;
 
 public class SslContextFactory {
 
-	public static final String PROTOCOL = "TLS";
+    public static final String PROTOCOL = "TLS";
 
-	
-	public static SSLContext getServerContext(final SslKeyStoreData keyStoreData) {
+    private static String toString(final InputStream inputStream)
+            throws IOException {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final byte[] buffer = new byte[1024];
+        int length = 0;
+        while ((length = inputStream.read(buffer)) != -1) {
+            baos.write(buffer, 0, length);
+        }
+        return new String(baos.toByteArray());
+    }
 
-		String algorithm = Security
-				.getProperty("ssl.KeyManagerFactory.algorithm");
-		if (algorithm == null) {
-			algorithm = "SunX509";
-		}
+    public static SSLContext getServerContext(final SslKeyStoreData keyStoreData) {
 
-		SSLContext serverContext = null;
+        String algorithm = Security
+                .getProperty("ssl.KeyManagerFactory.algorithm");
+        if (algorithm == null) {
+            algorithm = "SunX509";
+        }
 
-		try {
-			final KeyStore ks = KeyStore.getInstance("JKS");
-			ks.load(keyStoreData.asInputStream(),
-					keyStoreData.getKeyStorePassword());
+        SSLContext serverContext = null;
 
-			// Set up key manager factory to use our key store
-			final KeyManagerFactory kmf = KeyManagerFactory
-					.getInstance(algorithm);
-			kmf.init(ks, keyStoreData.getCertificatePassword());
+        if (keyStoreData.encoding().equals("BYTE")) {
+            try {
+                final KeyStore ks = KeyStore.getInstance("JKS");
+                ks.load(keyStoreData.asInputStream(),
+                        keyStoreData.getKeyStorePassword());
 
-			// Initialize the SSLContext to work with our key managers.
-			serverContext = SSLContext.getInstance(PROTOCOL);
-			serverContext.init(kmf.getKeyManagers(), null, null);
-		} catch (final Exception e) {
-			throw new Error("Failed to initialize the server-side SSLContext",
-					e);
-		}
+                // Set up key manager factory to use our key store
+                final KeyManagerFactory kmf = KeyManagerFactory
+                        .getInstance(algorithm);
+                kmf.init(ks, keyStoreData.getCertificatePassword());
 
-		return serverContext;
-	}
+                // Initialize the SSLContext to work with our key managers.
+                serverContext = SSLContext.getInstance(PROTOCOL);
+                serverContext.init(kmf.getKeyManagers(), null, null);
+            } catch (final Exception e) {
+                throw new Error(
+                        "Failed to initialize the server-side SSLContext", e);
+            }
+        } else if (keyStoreData.equals("BASE64")) {
+            try {
+                serverContext = SSLContext.getInstance("TLS");
+                final KeyStore ks = KeyStore.getInstance("PKCS12");
+                ks.load(new ByteArrayInputStream(Base64Coder
+                        .decode(toString(keyStoreData.asInputStream()))),
+                        keyStoreData.getKeyStorePassword());
+                final KeyManagerFactory kmf = KeyManagerFactory
+                        .getInstance("SunX509");
+                kmf.init(ks, keyStoreData.getCertificatePassword());
+                serverContext.init(kmf.getKeyManagers(), null, null);
+            } catch (final Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return serverContext;
+    }
 }
