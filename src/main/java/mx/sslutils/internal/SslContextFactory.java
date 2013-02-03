@@ -71,7 +71,7 @@ public class SslContextFactory {
                 throw new Error(
                         "Failed to initialize the server-side SSLContext", e);
             }
-        } else if (keyStoreData.equals("BASE64")) {
+        } else if (keyStoreData.encoding().equals("BASE64")) {
             try {
                 serverContext = SSLContext.getInstance("TLS");
                 final KeyStore ks = KeyStore.getInstance("PKCS12");
@@ -85,6 +85,9 @@ public class SslContextFactory {
             } catch (final Exception e) {
                 throw new RuntimeException(e);
             }
+        } else {
+            throw new RuntimeException("Keystore Encoding not supported: "
+                    + keyStoreData.encoding());
         }
 
         return serverContext;
