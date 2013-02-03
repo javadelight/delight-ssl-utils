@@ -32,7 +32,10 @@ public class SslContextFactory {
 
     public static final String PROTOCOL = "TLS";
 
-    private static String toString(final InputStream inputStream)
+    // <!-- one.download
+    // https://u1.linnk.it/qc8sbw/usr/apps/textsync/files/fragements-stream-to-string
+    // -->
+    public static String toString(final InputStream inputStream)
             throws IOException {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final byte[] buffer = new byte[1024];
@@ -42,6 +45,8 @@ public class SslContextFactory {
         }
         return new String(baos.toByteArray());
     }
+
+    // <!-- one.end -->
 
     public static SSLContext getServerContext(final SslKeyStoreData keyStoreData) {
 
