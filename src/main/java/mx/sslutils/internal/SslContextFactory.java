@@ -58,6 +58,22 @@ public class SslContextFactory {
 
         SSLContext serverContext = null;
 
+        if (keyStoreData.encoding().equals("CUSTOMBASE64")) {
+            try {
+                serverContext = SSLContext.getInstance("TLS");
+                final KeyStore ks = KeyStore.getInstance("JKS");
+                ks.load(new ByteArrayInputStream(Base64Coder
+                        .decode(toString(keyStoreData.asInputStream()))),
+                        keyStoreData.getKeyStorePassword());
+                final KeyManagerFactory kmf = KeyManagerFactory
+                        .getInstance(algorithm);
+                kmf.init(ks, keyStoreData.getCertificatePassword());
+                serverContext.init(kmf.getKeyManagers(), null, null);
+            } catch (final Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else
+
         if (keyStoreData.encoding().equals("BYTE")) {
             try {
                 final KeyStore ks = KeyStore.getInstance("JKS");
@@ -84,7 +100,7 @@ public class SslContextFactory {
                         .decode(toString(keyStoreData.asInputStream()))),
                         keyStoreData.getKeyStorePassword());
                 final KeyManagerFactory kmf = KeyManagerFactory
-                        .getInstance("SunX509");
+                        .getInstance(algorithm);
                 kmf.init(ks, keyStoreData.getCertificatePassword());
                 serverContext.init(kmf.getKeyManagers(), null, null);
             } catch (final Exception e) {
