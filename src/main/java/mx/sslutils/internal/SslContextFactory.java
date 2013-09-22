@@ -60,7 +60,7 @@ public class SslContextFactory {
 
         if (keyStoreData.encoding().equals("CUSTOMBASE64")) {
             try {
-                serverContext = SSLContext.getInstance("TLS");
+
                 final KeyStore ks = KeyStore.getInstance("JKS");
                 ks.load(new ByteArrayInputStream(Base64Coder
                         .decode(toString(keyStoreData.asInputStream()))),
@@ -68,6 +68,8 @@ public class SslContextFactory {
                 final KeyManagerFactory kmf = KeyManagerFactory
                         .getInstance(algorithm);
                 kmf.init(ks, keyStoreData.getCertificatePassword());
+
+                serverContext = SSLContext.getInstance(PROTOCOL);
                 serverContext.init(kmf.getKeyManagers(), null, null);
             } catch (final Exception e) {
                 throw new RuntimeException(e);
