@@ -207,14 +207,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</build>
 
 	<distributionManagement>
-		<repository>
-			<id>appjangle-releases</id>
-			<url>${repos.mvn1-releases}</url>
-		</repository>
-		<snapshotRepository>
-			<id>appjangle-snapshots</id>
-			<url>${repos.mvn1-snapshots}</url>
-		</snapshotRepository>
+		<repository><id>appjangle-releases</id><url>${repos.mvn1-releases}</url></repository><snapshotRepository><id>appjangle-snapshots</id><url>${repos.mvn1-snapshots}</url></snapshotRepository>
 	</distributionManagement>
 
 
