@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Template: Source + GWT + in workspace dependencies 27.11.2010 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<groupId>mx.sslutils</groupId>
 	<artifactId>mxSslUtils</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
@@ -23,6 +23,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
 	<!-- Dependent Modules -->
 	<dependencies>
+
+		<dependency>
+			<artifactId>java-ssl-utils</artifactId>
+			<groupId>de.mxro.sslutils</groupId>
+			<version>[0.0.1,)</version>
+		</dependency>
 
 		<dependency>
 			<groupId>de.mxro.gtwutils</groupId>
@@ -100,7 +106,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-									</executions>
+				</executions>
 			</plugin>
 
 			<!-- Cleanup necessary because of PDE tweaks, clear the project directory -->
@@ -190,7 +196,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 			</resource>
 
 		</resources>
-		
+
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
@@ -207,7 +213,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</build>
 
 	<distributionManagement>
-		<repository><id>appjangle-releases</id><url>${repos.mvn1-releases}</url></repository><snapshotRepository><id>appjangle-snapshots</id><url>${repos.mvn1-snapshots}</url></snapshotRepository>
+		<repository>
+			<id>appjangle-releases</id>
+			<url>${repos.mvn1-releases}</url>
+		</repository>
+		<snapshotRepository>
+			<id>appjangle-snapshots</id>
+			<url>${repos.mvn1-snapshots}</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 
