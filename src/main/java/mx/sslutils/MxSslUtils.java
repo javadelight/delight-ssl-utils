@@ -15,7 +15,7 @@ import mx.sslutils.internal.SslContextFactory;
 
 public class MxSslUtils {
 
-    private static Map<SslKeyStoreData, SSLContext> cache;
+    public static Map<SslKeyStoreData, SSLContext> cache;
 
     static {
         cache = new IdentityHashMap<SslKeyStoreData, SSLContext>();
@@ -28,20 +28,6 @@ public class MxSslUtils {
      */
     public static SslKeyStoreData getLinnkItServerCertificate() {
         return new NxUncertifiedSslKeyStore();
-    }
-
-    public static SSLContext createContextForCertificate(
-            final SslKeyStoreData keyStoreData) {
-        if (cache.containsKey(keyStoreData)) {
-            return cache.get(keyStoreData);
-        }
-
-        final SSLContext newContext = SslContextFactory
-                .getServerContext(keyStoreData);
-
-        cache.put(keyStoreData, newContext);
-
-        return newContext;
     }
 
     public static SSLContext getClientContext() {
