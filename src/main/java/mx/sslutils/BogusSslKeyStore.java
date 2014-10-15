@@ -18,6 +18,8 @@ package mx.sslutils;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import de.mxro.sslutils.SslKeyStoreData;
+
 /**
  * A bogus key store which provides all the required information to create an
  * example SSL connection.

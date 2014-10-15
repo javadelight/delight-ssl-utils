@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 
+import de.mxro.sslutils.SslKeyStoreData;
 import mx.sslutils.internal.SslContextFactory;
 
 public class MxSslUtils {

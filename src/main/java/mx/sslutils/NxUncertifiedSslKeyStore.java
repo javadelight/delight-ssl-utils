@@ -8,6 +8,8 @@ package mx.sslutils;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import de.mxro.sslutils.SslKeyStoreData;
+
 /**
  * An uncertified private key for nx nodes.
  * 

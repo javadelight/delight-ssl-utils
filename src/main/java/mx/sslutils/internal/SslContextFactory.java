@@ -25,8 +25,8 @@ import java.security.Security;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 
+import de.mxro.sslutils.SslKeyStoreData;
 import mx.gwtutils.Base64Coder;
-import mx.sslutils.SslKeyStoreData;
 
 public class SslContextFactory {
 
