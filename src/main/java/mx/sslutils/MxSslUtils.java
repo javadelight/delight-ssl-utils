@@ -5,21 +5,12 @@
  ******************************************************************************/
 package mx.sslutils;
 
-import java.util.IdentityHashMap;
-import java.util.Map;
-
 import javax.net.ssl.SSLContext;
 
 import de.mxro.sslutils.SslKeyStoreData;
-import mx.sslutils.internal.SslContextFactory;
+import de.mxro.sslutils.internal.SslContextFactory;
 
 public class MxSslUtils {
-
-    public static Map<SslKeyStoreData, SSLContext> cache;
-
-    static {
-        cache = new IdentityHashMap<SslKeyStoreData, SSLContext>();
-    }
 
     /**
      * A generic certificate for a linnk.it node.
@@ -34,11 +25,9 @@ public class MxSslUtils {
         SSLContext clientContext = null;
         try {
             clientContext = SSLContext.getInstance(SslContextFactory.PROTOCOL);
-            clientContext.init(null, SslTrustManagerFactory.getTrustManagers(),
-                    null);
+            clientContext.init(null, SslTrustManagerFactory.getTrustManagers(), null);
         } catch (final Exception e) {
-            throw new Error("Failed to initialize the client-side SSLContext",
-                    e);
+            throw new Error("Failed to initialize the client-side SSLContext", e);
         }
         return clientContext;
     }
