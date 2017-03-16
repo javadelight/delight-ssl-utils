@@ -16,47 +16,46 @@ import javax.net.ssl.TrustManager;
 
 public class SslUtils {
 
-	private static SSLContext sslContext = null;
-	private static SSLSocketFactory sslSocketFactory = null;
-	private static HostnameVerifier hostnameVerifier = new DefaultHostNameVerifier();
+    private static SSLContext sslContext = null;
+    private static SSLSocketFactory sslSocketFactory = null;
+    private static HostnameVerifier hostnameVerifier = new DefaultHostNameVerifier();
 
-	public static SSLContext getSslContext() {
-		if (sslContext == null) {
-			final TrustManager[] trustNxCerts = new TrustManager[] {
-					new AcceptAllX509TrustManager(),
-					new DefaultX509TrustManager() };
+    public static SSLContext getSslContext() {
+        if (sslContext == null) {
+            final TrustManager[] trustNxCerts = new TrustManager[] { new AcceptAllX509TrustManager(),
+                    new DefaultX509TrustManager() };
 
-			try {
-				final SSLContext sc = SSLContext.getInstance("TLS");
+            try {
+                final SSLContext sc = SSLContext.getInstance("TLS");
 
-				sc.init(null, trustNxCerts, new java.security.SecureRandom());
+                sc.init(null, trustNxCerts, new java.security.SecureRandom());
 
-				sslContext = sc;
+                sslContext = sc;
 
-			} catch (final KeyManagementException e) {
-				throw new RuntimeException(e);
-			} catch (final NoSuchAlgorithmException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		return sslContext;
-	}
+            } catch (final KeyManagementException e) {
+                throw new RuntimeException(e);
+            } catch (final NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return sslContext;
+    }
 
-	public static SSLSocketFactory getSSLSocketFactory() {
-		if (sslSocketFactory == null) {
-			sslSocketFactory = getSslContext().getSocketFactory();
-		}
+    public static SSLSocketFactory getSSLSocketFactory() {
+        if (sslSocketFactory == null) {
+            sslSocketFactory = getSslContext().getSocketFactory();
+        }
 
-		return sslSocketFactory;
+        return sslSocketFactory;
 
-	}
+    }
 
-	public static final void defaultNxCertificateChecking(
-			final HttpsURLConnection connection) {
+    @Deprecated
+    public static final void defaultNxCertificateChecking(final HttpsURLConnection connection) {
 
-		connection.setSSLSocketFactory(getSSLSocketFactory());
-		connection.setHostnameVerifier(hostnameVerifier);
+        connection.setSSLSocketFactory(getSSLSocketFactory());
+        connection.setHostnameVerifier(hostnameVerifier);
 
-	}
+    }
 
 }
